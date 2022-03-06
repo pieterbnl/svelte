@@ -1,11 +1,8 @@
-<script>    
-    // export keyword allows variable to be set from outside
-    // a variable being exported is called a 'prop', a bindable property
-    // note: this makes it possible to communicate a value between components
-    export let userName;
-    export let jobTitle;
-    export let description;
-    export let userImage;
+<script>
+  export let userName;
+  export let jobTitle;
+  export let description;
+  export let userImage;
 </script>
 
 <style>
@@ -14,18 +11,23 @@
     max-width: 30rem;
     border-radius: 5px;
     margin: 1rem 0;
+    background: white;
   }
 
   header {
     display: flex;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
     height: 7rem;
   }
 
   .thumb {
     width: 33%;
     height: 100%;
+  }
+
+  .thumb-placeholder {
+    background: #ccc;
   }
 
   img {
@@ -39,7 +41,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-left: 1rem ;
+    padding-left: 1rem;
   }
 
   h1 {
@@ -64,8 +66,8 @@
 
 <div class="contact-card">
   <header>
-    <div class="thumb">
-      <img src="{userImage}" alt="{userName}" />
+    <div class="thumb" class:thumb-placeholder="{!userImage}">
+      <img src={userImage} alt={userName} />
     </div>
     <div class="user-data">
       <h1>{userName}</h1>
