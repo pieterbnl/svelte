@@ -8,6 +8,8 @@
   
   let formState = 'empty';
 
+  let createdContacts = [];
+
   function addContact() {
     if (
       name.trim().length == 0 || 
@@ -18,8 +20,37 @@
       formState = 'invalid';
       return;
     }
+    // create object with key pair values
+    // first example solution, using push, won't be detected by svelte 
+    // therefore, use second example solution instead
+    //
+    // createdContacts.push({
+    //   name: name, 
+    //   jobTitle: title, 
+    //   imageUrl: image, 
+    //   desc: description  
+    // });
+    // formState = 'done';
+
+    createdContacts = [
+      ...createdContacts,
+      {
+      id: Math.random(),
+      name: name, 
+      jobTitle: title, 
+      imageUrl: image, 
+      desc: description  
+    }];
     formState = 'done';
   }
+
+function deleteFirst() {
+  createdContacts = createdContacts.slice(1);
+}
+
+function deleteLast() {
+  createdContacts = createdContacts.slice(0, -1);
+}
 
 </script>
 
@@ -51,15 +82,23 @@
 
 
 <button on:click={addContact}>Add Contact Card</button>
+<button on:click={deleteFirst}>Delete First</button>
+<button on:click={deleteLast}>Delete Last</button>
 
-{#if formState === 'done'}
-  <ContactCard 
-    userName={name} 
-    jobTitle={title} 
-    {description} 
-    userImage={image} /> 
-{:else if formState === 'invalid'}
+{#if formState === 'invalid'}
   <p>Incomplete input.</p>
 {:else}
   <p>Please enter your data and hit the button.</p>
 {/if}
+
+{#each createdContacts as contact, i (contact.id)}
+  <h2>#{i+1}</h2>
+  <ContactCard 
+    userName={contact.name} 
+    jobTitle={contact.jobTitle} 
+    description={contact.desc}
+    userImage={contact.imageUrl} /> 
+<!-- else case reacts on when the array is empty -->
+{:else}
+  <p>No contacts found. Please add at least one contact.</p>
+{/each}
